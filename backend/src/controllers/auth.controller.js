@@ -1,0 +1,48 @@
+const authService = require("../services/auth.service");
+
+const register = async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters" });
+    }
+
+    const user = await authService.register({ name, email, password });
+    res.status(201).json({ message: "Registration successful", user });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
+    const { user, accessToken } = await authService.login({ email, password });
+    res.json({ message: "Login successful", user, accessToken });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const logout = async (req, res, next) => {
+  res.json({ message: "Logged out successfully" });
+};
+
+const getMe = async (req, res) => {
+  // req.user is set by auth middleware
+  res.json({ user: req.user });
+};
+
+module.exports = { register, login, logout, getMe };
