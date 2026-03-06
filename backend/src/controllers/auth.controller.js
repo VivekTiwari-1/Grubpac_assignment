@@ -51,7 +51,6 @@ const logout = async (req, res) => {
 };
 
 const getMe = async (req, res) => {
-  // req.user is set by auth middleware
   res.json({ user: req.user });
 };
 

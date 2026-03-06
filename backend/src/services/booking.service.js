@@ -7,8 +7,7 @@ const createBooking = async ({ userId, roomId, startDate, endDate }) => {
   try {
     await connection.beginTransaction();
 
-    // 1. Lock the room row so no concurrent booking can sneak in
-    //    FOR UPDATE prevents other transactions reading this until we commit
+    // 1. Lock the room row so no concurrent booking can access
     const [rooms] = await connection.query(
       "SELECT * FROM rooms WHERE id = ? FOR UPDATE",
       [roomId],
@@ -20,7 +19,7 @@ const createBooking = async ({ userId, roomId, startDate, endDate }) => {
       throw error;
     }
 
-    // 2. Re-check availability inside the transaction (critical — prevents race condition)
+    // 2. Re-check availability inside the transaction
     const [overlapping] = await connection.query(
       `SELECT id FROM bookings
        WHERE room_id = ?
@@ -63,11 +62,9 @@ const createBooking = async ({ userId, roomId, startDate, endDate }) => {
       roomName: rooms[0].name,
     };
   } catch (err) {
-    // Rollback on any failure — DB stays clean
     await connection.rollback();
     throw err;
   } finally {
-    // Always release connection back to pool regardless of success or failure
     connection.release();
   }
 };

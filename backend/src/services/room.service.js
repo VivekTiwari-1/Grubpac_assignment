@@ -20,9 +20,6 @@ const getRoomById = async (roomId) => {
 };
 
 const checkAvailability = async (roomId, startDate, endDate) => {
-  // Core overlap query:
-  // An overlap exists when an existing booking's start_date < our end_date
-  // AND its end_date > our start_date
   const [rows] = await pool.query(
     `SELECT id FROM bookings
      WHERE room_id = ?

@@ -3,9 +3,7 @@
 CREATE DATABASE IF NOT EXISTS room_booking;
 USE room_booking;
 
--- ================================
 -- USERS TABLE
--- ================================
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
@@ -14,9 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ================================
 -- ROOMS TABLE
--- ================================
 CREATE TABLE IF NOT EXISTS rooms (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(150) NOT NULL,
@@ -27,9 +23,7 @@ CREATE TABLE IF NOT EXISTS rooms (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ================================
 -- BOOKINGS TABLE
--- ================================
 CREATE TABLE IF NOT EXISTS bookings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -42,14 +36,10 @@ CREATE TABLE IF NOT EXISTS bookings (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE,
 
-  -- Prevent nonsensical date ranges at DB level
   CONSTRAINT chk_dates CHECK (end_date > start_date)
 );
 
--- ================================
 -- SEED: Sample Rooms
--- (Run this after creating tables)
--- ================================
 INSERT INTO rooms (name, description, price_per_night, capacity, image_url) VALUES
 (
   'Deluxe Ocean Suite',

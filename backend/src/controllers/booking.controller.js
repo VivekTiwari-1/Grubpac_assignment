@@ -3,7 +3,7 @@ const bookingService = require("../services/booking.service");
 const createBooking = async (req, res, next) => {
   try {
     const { roomId, startDate, endDate } = req.body;
-    const userId = req.user.id; // from auth middleware
+    const userId = req.user.id;
 
     // Input validation
     if (!roomId || !startDate || !endDate) {

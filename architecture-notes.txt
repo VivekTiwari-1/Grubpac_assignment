@@ -1,0 +1,88 @@
+ARCHITECTURE NOTES — Room Booking System
+=========================================
+
+1. HOW OVERLAPPING BOOKINGS ARE PREVENTED
+------------------------------------------
+Overlap prevention is handled entirely on the backend using two layers:
+
+Layer 1 — SQL overlap query:
+  A booking overlaps if an existing booking's start_date is before the new
+  end_date AND its end_date is after the new start_date:
+
+    SELECT id FROM bookings
+    WHERE room_id = ?
+      AND start_date < ? (new end_date)
+      AND end_date > ?   (new start_date)
+
+  If any row is returned, the room is unavailable for those dates.
+
+Layer 2 — Database transaction with row locking:
+  When creating a booking:
+    1. Open a transaction
+    2. Lock the room row with SELECT ... FOR UPDATE
+       (prevents any other transaction from booking the same room simultaneously)
+    3. Re-run the overlap check inside the transaction
+    4. Insert the booking if no overlap found
+    5. COMMIT on success, ROLLBACK on any failure
+
+  This prevents two users booking the same room at the exact same moment will result in one succeeding and one receiving a 409 conflict,
+  not two overlapping bookings.
+
+Frontend also calls the availability endpoint before showing the confirm button, but this is a UX convenience only. The backend is the single source of truth.
+
+
+2. WHY THE PROJECT IS STRUCTURED THIS WAY
+------------------------------------------
+Backend follows a layered architecture:
+
+  Routes → Controllers → Services → Database
+
+  - Routes: only define endpoints and attach middleware
+  - Controllers: handle HTTP concerns (req, res, input validation, status codes)
+  - Services: contain all business logic (overlap check, price calculation etc.)
+  - Config: database connection pool, isolated from business logic
+
+Frontend follows a feature-based structure:
+
+  - app/: Next.js App Router pages, grouped by (auth) and (protected)
+  - components/: reusable UI pieces, ui/ subdirectory for primitives
+  - store/: Zustand stores, one per domain (auth, rooms, bookings)
+  - lib/api.js: single axios instance, all API calls defined here
+
+3. HOW FRONTEND AND BACKEND COMMUNICATE
+-----------------------------------------
+  - All API calls go through a single axios instance in src/lib/api.js
+  - withCredentials: true is set on the axios instance so cookies are
+    automatically attached to every request without manual token management
+  - The backend sets the JWT as an httpOnly cookie on login, meaning
+    JavaScript cannot read it — this protects against XSS attacks
+  - CORS is configured on the backend to allow only the frontend origin
+    with credentials, preventing requests from other domains
+  - On app mount, the frontend calls GET /api/auth/me — if the cookie is
+    still valid the user is silently rehydrated without a new login
+
+
+4. HOW THIS SYSTEM COULD BE SCALED IN THE FUTURE
+--------------------------------------------------
+Database:
+  - Add indexes on bookings(room_id, start_date, end_date) to speed up
+    the overlap query as bookings grow
+
+Backend:
+  - Containerize with Docker and deploy multiple instances behind a
+    load balancer
+  - Move to a stateless architecture (already done — JWT in cookies means
+    no server-side session state to synchronize between instances)
+  - Add a CDN or Redis cache for the rooms list since rooms rarely change
+  - Add a job queue (e.g. Kafka) for sending booking confirmation emails
+
+Auth:
+  - Introduce refresh tokens if session length needs to be extended
+    beyond the access token expiry without re-login
+  - Add OAuth (Google, GitHub) as an alternative login method
+
+Frontend:
+  - Add React Query on top of Zustand for server state caching
+    and automatic background refetching
+  - Implement ISR (Incremental Static Regeneration) for the rooms listing
+    page since room data changes infrequently
