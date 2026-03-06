@@ -1,8 +1,7 @@
-const path = require("path");
-
-// This creates an absolute path from the current file to the .env file
-require("dotenv").config({ path: path.resolve(__dirname, ".env") });
-
+// Only require dotenv if we are NOT in production
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const app = require("./src/app");
 
 const PORT = process.env.PORT;
