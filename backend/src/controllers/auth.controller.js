@@ -1,5 +1,12 @@
 const authService = require("../services/auth.service");
 
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict",
+  maxAge: parseInt(process.env.COOKIE_MAX_AGE),
+};
+
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -30,13 +37,16 @@ const login = async (req, res, next) => {
     }
 
     const { user, accessToken } = await authService.login({ email, password });
-    res.json({ message: "Login successful", user, accessToken });
+
+    res.cookie("accessToken", accessToken, COOKIE_OPTIONS);
+    res.json({ message: "Login successful", user });
   } catch (err) {
     next(err);
   }
 };
 
-const logout = async (req, res, next) => {
+const logout = async (req, res) => {
+  res.clearCookie("accessToken", COOKIE_OPTIONS);
   res.json({ message: "Logged out successfully" });
 };
 
