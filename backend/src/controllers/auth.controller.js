@@ -3,8 +3,8 @@ const authService = require("../services/auth.service");
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
-  maxAge: parseInt(process.env.COOKIE_MAX_AGE),
+  sameSite: "none",
+  maxAge: 604800000, // 7 days in ms,
 };
 
 const register = async (req, res, next) => {

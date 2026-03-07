@@ -6,16 +6,6 @@ const api = axios.create({
   withCredentials: true, // required so cookies are sent cross-origin
 });
 
-// Attach token to every request automatically
-api.interceptors.request.use((config) => {
-  // Read token from memory via localStorage fallback for page refreshes
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 // Auth
 export const registerUser = (data) => api.post("/auth/register", data);
 export const loginUser = (data) => api.post("/auth/login", data);

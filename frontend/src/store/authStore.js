@@ -18,6 +18,7 @@ const useAuthStore = create((set) => ({
 
   login: async (email, password) => {
     const res = await loginUser({ email, password });
+    console.log(res.data.user);
     set({ user: res.data.user });
     toast.success(`Welcome back, ${res.data.user.name}!`);
   },

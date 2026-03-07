@@ -1,7 +1,7 @@
 -- database/schema.sql
 
-CREATE DATABASE IF NOT EXISTS room_booking;
-USE room_booking;
+CREATE DATABASE IF NOT EXISTS railway;
+USE railway;
 
 -- USERS TABLE
 CREATE TABLE IF NOT EXISTS users (
