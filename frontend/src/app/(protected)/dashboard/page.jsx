@@ -27,12 +27,12 @@ export default function DashboardPage() {
           {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl border border-gray-200 h-72 animate-pulse"
+              className="bg-white rounded-xl border border-orange-200 h-72 animate-pulse"
             >
-              <div className="bg-gray-200 h-48 rounded-t-xl" />
+              <div className="bg-orange-100/60 h-48 rounded-t-xl" />
               <div className="p-4 flex flex-col gap-2">
-                <div className="bg-gray-200 h-4 rounded w-3/4" />
-                <div className="bg-gray-200 h-3 rounded w-1/2" />
+                <div className="bg-orange-100/60 h-4 rounded w-3/4" />
+                <div className="bg-orange-100/60 h-3 rounded w-1/2" />
               </div>
             </div>
           ))}
@@ -48,7 +48,7 @@ export default function DashboardPage() {
         <p className="text-red-600 text-sm">{error}</p>
         <button
           onClick={fetchRooms}
-          className="text-blue-600 text-sm underline"
+          className="text-orange-600 text-sm underline"
         >
           Try again
         </button>

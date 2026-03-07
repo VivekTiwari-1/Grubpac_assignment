@@ -32,7 +32,7 @@ export default function RoomCard({ room, onBook }) {
 
         <div className="mt-3 flex items-center justify-between">
           <div>
-            <span className="text-lg font-bold text-blue-600">
+            <span className="text-lg font-bold text-orange-600">
               ${parseFloat(room.price_per_night).toFixed(2)}
             </span>
             <span className="text-xs text-gray-400"> / night</span>

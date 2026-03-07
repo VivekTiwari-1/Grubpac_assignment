@@ -2,9 +2,9 @@ const authService = require("../services/auth.service");
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "none",
-  maxAge: 604800000, // 7 days in ms,
+  secure: true,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  maxAge: 604800000, // 7 days,
 };
 
 const register = async (req, res, next) => {

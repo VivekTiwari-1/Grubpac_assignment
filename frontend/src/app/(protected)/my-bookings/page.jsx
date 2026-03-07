@@ -23,11 +23,11 @@ export default function MyBookingsPage() {
               key={i}
               className="bg-white rounded-xl border border-gray-200 h-36 animate-pulse flex overflow-hidden"
             >
-              <div className="w-44 bg-gray-200 shrink-0" />
+              <div className="w-44 bg-orange-100/60 shrink-0" />
               <div className="flex-1 p-4 flex flex-col gap-3">
-                <div className="bg-gray-200 h-4 rounded w-1/3" />
-                <div className="bg-gray-200 h-3 rounded w-1/2" />
-                <div className="bg-gray-200 h-3 rounded w-1/4 mt-auto" />
+                <div className="bg-orange-100/60 h-4 rounded w-1/3" />
+                <div className="bg-orange-100/60 h-3 rounded w-1/2" />
+                <div className="bg-orange-100/60 h-3 rounded w-1/4 mt-auto" />
               </div>
             </div>
           ))}
@@ -62,7 +62,7 @@ export default function MyBookingsPage() {
         </p>
         <Link
           href="/dashboard"
-          className="mt-2 text-sm text-blue-600 hover:underline font-medium"
+          className="mt-2 text-sm text-orange-600 hover:underline font-medium"
         >
           Browse Rooms →
         </Link>

@@ -35,12 +35,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full max-w-md bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+    <div className="w-full max-w-md bg-white rounded-xl shadow-sm border border-orange-200 p-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome back</h1>
       <p className="text-sm text-gray-500 mb-6">Log in to your account</p>
 
       {serverError && (
-        <div className="bg-red-50 text-red-700 text-sm px-4 py-3 rounded-lg mb-4">
+        <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-xl mb-4 border border-red-100">
           {serverError}
         </div>
       )}
@@ -49,7 +49,7 @@ export default function LoginPage() {
         <Input
           label="Email"
           type="email"
-          placeholder="john@example.com"
+          placeholder="abc@example.com"
           error={errors.email?.message}
           {...register("email", {
             required: "Email is required",

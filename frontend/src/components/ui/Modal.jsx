@@ -32,7 +32,8 @@ export default function Modal({ isOpen, onClose, title, children }) {
 
       {/* Modal box */}
       <div
-        className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-md p-6"
+        className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-md p-6
+  border border-orange-100"
         onClick={(e) => e.stopPropagation()} // prevent close when clicking inside
       >
         <div className="flex items-center justify-between mb-4">

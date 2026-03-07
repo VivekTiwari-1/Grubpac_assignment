@@ -86,7 +86,7 @@ export default function BookingModal({
     <Modal isOpen={isOpen} onClose={handleClose} title={`Book — ${room?.name}`}>
       <div className="flex flex-col gap-4">
         {/* Room summary */}
-        <div className="bg-gray-50 rounded-lg px-4 py-3 flex justify-between items-center">
+        <div className="bg-orange-50 rounded-xl px-4 py-3 flex justify-between items-center border border-orange-100">
           <span className="text-sm text-gray-600">Price per night</span>
           <span className="font-semibold text-gray-900">
             ${parseFloat(room?.price_per_night).toFixed(2)}
@@ -112,8 +112,8 @@ export default function BookingModal({
               endDate={endDate}
               minDate={new Date()}
               placeholderText="Select date"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm
-                focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-orange-300 rounded-lg px-3 py-2 text-sm
+                focus:outline-none focus:ring-2 focus:ring-orange-500"
               dateFormat="MMM d, yyyy"
             />
           </div>
@@ -138,8 +138,8 @@ export default function BookingModal({
               }
               placeholderText="Select date"
               disabled={!startDate}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm
-                focus:outline-none focus:ring-2 focus:ring-blue-500
+              className="w-full border border-orange-300 rounded-lg px-3 py-2 text-sm
+                focus:outline-none focus:ring-2 focus:ring-orange-500
                 disabled:bg-gray-100 disabled:cursor-not-allowed"
               dateFormat="MMM d, yyyy"
             />
@@ -148,7 +148,7 @@ export default function BookingModal({
 
         {/* Price summary */}
         {nights > 0 && (
-          <div className="bg-blue-50 rounded-lg px-4 py-3 flex flex-col gap-1">
+          <div className="bg-orange-50 rounded-xl px-4 py-3 flex flex-col gap-1 border border-orange-100">
             <div className="flex justify-between text-sm text-gray-600">
               <span>
                 ${parseFloat(room?.price_per_night).toFixed(2)} × {nights} night
@@ -156,7 +156,7 @@ export default function BookingModal({
               </span>
               <span>${totalPrice}</span>
             </div>
-            <div className="flex justify-between font-semibold text-gray-900 pt-1 border-t border-blue-100 mt-1">
+            <div className="flex justify-between font-semibold text-gray-900 pt-1 border-t border-orange-200 mt-1">
               <span>Total</span>
               <span>${totalPrice}</span>
             </div>
