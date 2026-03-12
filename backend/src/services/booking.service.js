@@ -1,7 +1,8 @@
 const pool = require("../config/db");
+const { checkAvailability } = require("../services/room.service");
 
 const createBooking = async ({ userId, roomId, startDate, endDate }) => {
-  // Get a dedicated connection from pool for the transaction
+  // dedicated connection from pool for the transaction
   const connection = await pool.getConnection();
 
   try {
@@ -20,15 +21,7 @@ const createBooking = async ({ userId, roomId, startDate, endDate }) => {
     }
 
     // 2. Re-check availability inside the transaction
-    const [overlapping] = await connection.query(
-      `SELECT id FROM bookings
-       WHERE room_id = ?
-         AND start_date < ?
-         AND end_date > ?`,
-      [roomId, endDate, startDate],
-    );
-
-    if (overlapping.length > 0) {
+    if (!checkAvailability()) {
       const error = new Error("Room is not available for the selected dates");
       error.statusCode = 409;
       throw error;
@@ -70,7 +63,6 @@ const createBooking = async ({ userId, roomId, startDate, endDate }) => {
 };
 
 const getUserBookings = async (userId) => {
-  // JOIN to get room details alongside each booking
   const [rows] = await pool.query(
     `SELECT 
        b.id,

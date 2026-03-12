@@ -28,7 +28,7 @@ const checkAvailability = async (roomId, startDate, endDate) => {
     [roomId, endDate, startDate],
   );
 
-  return rows.length === 0; // true = available, false = already booked
+  return rows.length === 0; // true = available, false = booked
 };
 
 module.exports = { getAllRooms, getRoomById, checkAvailability };

@@ -14,7 +14,7 @@ export function middleware(request) {
 
   // if (isProtected && !token) {
   //   const loginUrl = new URL("/login", request.url);
-  //   // loginUrl.searchParams.set("from", pathname); // optional: redirect back after login
+  //   // loginUrl.searchParams.set("from", pathname);
   //   return NextResponse.redirect(loginUrl);
   // }
 

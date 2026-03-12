@@ -8,6 +8,11 @@ import useAuthStore from "@/store/authStore";
 export default function ProtectedLayout({ children }) {
   const { user, loading } = useAuthStore();
   const router = useRouter();
+  const initAuth = useAuthStore((state) => state.initAuth);
+
+  useEffect(() => {
+    initAuth();
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) {
